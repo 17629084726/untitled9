@@ -5,17 +5,6 @@
       "icon": "icon-text",
       "href": "page/news/newsList.html",
       "spread": false
-    },
-    {
-      "title": "考试记录",
-      "icon": "&#xe634;",
-      "href": "page/news/history.html",
-      "spread": false
-    },{
-      "title": "在线考试",
-      "icon": "icon-clock",
-      "href": "page/news/examInit.html",
-      "spread": false
     }
   ],
   "memberCenter": [

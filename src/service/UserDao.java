@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserDao {
    public User Login(User user);
 
-//    public  List<User> tableuser();
+    //public  List<User> tableuser();
 
 
 
@@ -17,7 +17,9 @@ public interface UserDao {
 
     public   Integer usercount();
 
-    public int deleteUserByid(Integer id);
+    public int deleteUserByid(String userId);
 
     public int addUser(User user);
+
+    public int updatetable(User user);
 }

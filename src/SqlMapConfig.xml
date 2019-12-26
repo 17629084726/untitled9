@@ -11,11 +11,11 @@
     </typeAliases>
 
     <!--分页-->
-    <plugins>
-        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+  <!--  <plugins>
+        <plugin interceptor="com.github.pacesetter.PageInterceptor">
             <property name="reasonable" value="true"/>
         </plugin>
-    </plugins>
+    </plugins>-->
     
 
     <mappers>

@@ -11,7 +11,9 @@ import tool.Tool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class Userconnn {
@@ -49,6 +51,7 @@ public class Userconnn {
         List<User> users = userDao.selectpage(map);
         Integer pagecount = userDao.usercount();
         Map<String, Object> returnTable = Tool.testLayui(users, page, limit);
+        System.out.println("JSOn"+returnTable);
         returnTable.put("count", pagecount);
         return returnTable;
     }
@@ -63,8 +66,8 @@ public class Userconnn {
 //    单个删除
         @RequestMapping("/deleteUserByid.action")
     @ResponseBody
-    public int deleteUserByid(Integer id) throws Exception {
-        int  result =   userDao.deleteUserByid(id);
+    public int deleteUserByid(String userId) throws Exception {
+        int  result =   userDao.deleteUserByid(userId);
         return  result;
     }
 
@@ -79,7 +82,7 @@ public class Userconnn {
         String[] ids = user_ids.split(",");
         int re = 0;
         for (String id: ids) {
-            re = userDao.deleteUserByid(Integer.parseInt(id));
+            re = userDao.deleteUserByid(id);
         }
         return re;
     }
@@ -146,11 +149,11 @@ public class Userconnn {
 //        }
 //        return map;
 //    }
-//    @RequestMapping("/updatetable.action")
-//    @ResponseBody
-//   public int updatetable(User user){
-//        return userDao.updatetable(user);
-//    }
+    @RequestMapping("/updatetable.action")
+    @ResponseBody
+   public int updatetable(User user){
+        return userDao.updatetable(user);
+    }
 //
 //
 

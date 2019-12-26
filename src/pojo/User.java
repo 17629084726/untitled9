@@ -1,28 +1,36 @@
 package pojo;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class User {
-    Integer id;
-    String userName;
-    String password;
-    String userEmail;
-    String userSex;
-    String userGrade;
-    String userStatus;
-    String userDesc;
-    String userEndTime;
-    String headpath;
-    Power power;
+    Integer userId =0;
+    String userName = "";
+    String password = "";
+    String userEmail = "";
+    String userSex = "";
+    String userGrade = "";
+    String userStatus = "";
+    String userDesc = "";
+    String userEndTime = "";
+    String headpath = "";
+    String userAdress = "";
+    String phoneNumber = "";
+    String userBirthday = "";
+    String realName = "";
+    String userHobby= "";
 
-
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserHobby() {
+        return userHobby;
+    }
+
+    public void setUserHobby(String userHobby) {
+        this.userHobby = userHobby;
     }
 
     public String getUserName() {
@@ -96,20 +104,50 @@ public class User {
     public void setHeadpath(String headpath) {
         this.headpath = headpath;
     }
-
-
-    public Power getPower() {
-        return power;
+    public String getUserAdress() {
+        return userAdress;
     }
 
-    public void setPower(Power power) {
-        this.power = power;
+    public void setUserAdress(String userAdress) {
+        this.userAdress = userAdress;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getUserBirthday() {
+        return userBirthday;
+    }
+
+    public void setUserBirthday(String userBirthday) {
+        this.userBirthday = userBirthday;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+//    public Power getPower() {
+//        return power;
+//    }
+//
+//    public void setPower(Power power) {
+//        this.power = power;
+//    }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", userEmail='" + userEmail + '\'' +
@@ -117,9 +155,13 @@ public class User {
                 ", userGrade='" + userGrade + '\'' +
                 ", userStatus='" + userStatus + '\'' +
                 ", userDesc='" + userDesc + '\'' +
-                ", userEndTime=" + userEndTime +
+                ", userEndTime='" + userEndTime + '\'' +
                 ", headpath='" + headpath + '\'' +
-                ", power=" + power +
+                ", userAdress='" + userAdress + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+
+                ", realName='" + realName + '\'' +
+                //", power=" + power +
                 '}';
     }
 }

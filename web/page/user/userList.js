@@ -18,12 +18,15 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
         id : "userListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
+            {field: 'id', title: '用户Id', minWidth:100, align:"center"},
             {field: 'userName', title: '用户名', minWidth:100, align:"center"},
             {field: 'userEmail', title: '用户邮箱', minWidth:200, align:'center',templet:function(d){
                 return '<a class="layui-blue" href="mailto:'+d.userEmail+'">'+d.userEmail+'</a>';
             }},
             {field: 'userSex', title: '用户性别', align:'center'},
-            {templet: '<div>{{(d.power.powername)}}</div>', title: '用户身份', align: 'center'},
+            {field: 'userGrade', title: '用户身份',  align:'center',templet:function(d){
+                    return d.userStatus == "1" ? "教师" : "学生";
+                }},
             {field: 'userStatus', title: '用户状态',  align:'center',templet:function(d){
                 return d.userStatus == "1" ? "正常使用" : "限制使用";
             }},
@@ -36,7 +39,9 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
             //         return "管理员";
             //     }
             // }},
-            {field: 'userEndTime', title: '最后登录时间', align:'center',minWidth:150},
+            {field: 'userEndTime', title: '最后登录时间', align:'center', minWidth:110, templet:function(d){
+                    return d.userEndTime.substring(0,10);
+                }},
             {title: '操作', minWidth:175, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
@@ -99,13 +104,13 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('userListTable'),
             data = checkStatus.data
-            // newsId = [];
+            newsId = [];
         var  id = "";
         if(data.length > 0) {
             for (var i in data) {
                 id += data[i].id + ","
                 layer.msg(id);
-                // newsId.push(data[i].newsId);
+                newsId.push(data[i].id);
             }
             console.log(id);
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
@@ -136,11 +141,20 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
 
     //列表操作
     table.on('tool(userList)', function(obj){
+        var checkStatus = table.checkStatus(obj.config.id)
+            // ,data = checkStatus.data; //获取选中的数据
         var layEvent = obj.event,
             data = obj.data;
-
+         id =obj.id;
         if(layEvent === 'edit'){ //编辑
-            addUser(data);
+            if (data.length==0){
+                layer.msg('请选择一行');
+            }else if(data.length > 1){
+                layer.msg('只能同时编辑一个');
+            } else {
+                layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+            }
+            // addUser(data);
         }else if(layEvent === 'usable'){ //启用禁用
             var _this = $(this),
                 usableText = "是否确定禁用此用户？",

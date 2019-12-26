@@ -6,19 +6,8 @@ layui.use(['form','layer',"jquery",'upload'],function(){
     form.render();
     form.on("submit(addUser)",function(data){
         //弹出loading
+        console.log(data);
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.5});
-        // 实际使用时的提交信息
-        // $.post("上传路径",{
-        //     userName : $(".userName").val(),  //登录名
-        //     userEmail : $(".userEmail").val(),  //邮箱
-        //     userSex : data.field.sex,  //性别
-        //     userGrade : data.field.userGrade,  //会员等级
-        //     userStatus : data.field.userStatus,    //用户状态
-        //     newsTime : submitTime,    //添加时间
-        //     userDesc : $(".userDesc").text(),    //用户简介
-        // },function(res){
-        //
-        // })
         setTimeout(function(){
             $.ajax(
                 {

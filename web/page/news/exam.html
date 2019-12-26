@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>考试系统初始--layui后台管理模板 2.0</title>
+	<title>考试系统初始--考试系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -80,6 +80,39 @@
 		    	</tr>
 		    </tbody>
 		</table>
+		<table id="tab3" class="layui-table mag0">
+			<colgroup>
+				<col>
+				<col width="100%">
+				<col>
+			</colgroup>
+			<thead>
+			<tr>
+				<th colspan="3">选择题:第3题</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td colspan="3"><p>不属于面向对象三大特征?</p></td>
+			</tr>
+			<tr>
+				<td>A:</td>
+				<td pc><input type="radio" name="choose2" value="1"></input>封装</td>
+			</tr>
+			<tr>
+				<td>B:</td>
+				<td pc><input type="radio" name="choose2" value="2"></input>继承</td>
+			</tr>
+			<tr>
+				<td>C:</td>
+				<td pc><input type="radio" name="choose2" value="3"></input>多肽</td>
+			</tr>
+			<tr>
+				<td>D:</td>
+				<td pc><input type="radio" name="choose2" value="4"></input>接口</td>
+			</tr>
+			</tbody>
+		</table>
 		<div class="magt10 layui-center">
 			<div class="layui-btn-container">
 				<button id="previousBtn" onclick="previous_Btn()"  type="button" class="layui-btn" lay-filter="previousBtn">上一题</button>
@@ -114,12 +147,12 @@
 	</blockquote>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript" src="../../js/cache.js"></script>
-	
-	
+
+	<script type="text/javascript" src="exam.js"></script>
 	<script>
 		
 		var nowPage=0;
-		var sumPage=2;
+		var sumPage=10;
 		var hour=0;//时
 		var minute=0;// 分
 		var second=0;// 秒

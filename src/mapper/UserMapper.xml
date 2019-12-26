@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.UserMapper">
     <resultMap id="resultMap" type="User">
-        <id property="id" column="id"></id>
+        <id property="userId" column="userId"></id>
         <result property="userName" column="userName"></result>
         <result property="password" column="password"></result>
         <result property="userEmail" column="userEmail"></result>
@@ -12,10 +12,17 @@
         <result property="userStatus" column="userStatus"></result>
         <result property="userEndTime" column="userEndTime"></result>
         <result property="headpath" column="headpath"></result>
-        <association property="power" javaType="Power">
+        <result property="userType" column="userType"></result>
+        <result property="phoneNumber" column="phoneNumber"></result>
+        <result property="userBirthday" column="userBirthday"></result>
+        <result property="userHobby" column="userHobby"></result>
+        <result property="realName" column="realName"></result>
+        <result property="userAdress" column="userAdress"></result>
+
+        <!--<association property="power" javaType="Power">
             <id property="id" column="pid"></id>
             <result property="powername" column="powername"></result>
-        </association>
+        </association>-->
     </resultMap>
 
     <sql id="sql">
@@ -34,37 +41,51 @@
     <!--<update id="updatehead" parameterType="User">-->
     <!--update user set headpath=#{headpath} where user_id=#{user_id}-->
     <!--</update>-->
-
-    <!--<update id="updatetable" parameterType="user">-->
-    <!--update user set name=#{name},loginName=# {loginName},birthDate=#{birthDate},phone=#{phone} where user_id=#{user_id}-->
-    <!--</update>-->
+<!--修改用户-->
+    <update id="updatetable" parameterType="user">
+    update user
+    <trim prefix="set" suffixOverrides=",">
+        <if test="userName!=null and userName != ''">userName=#{userName},</if>
+        <if test="password!=null and password != ''">password=#{password},</if>
+        <if test="userHobby!=null and userHobby != ''">userHobby=#{userHobby},</if>
+        <if test="userEmail!=null and userEmail != ''">userEmail=#{userEmail},</if>
+        <if test="userSex!=null and userSex != ''"> userSex=#{userSex},</if>
+        <if test="userHobby!=null and userHobby != ''">userHobby=#{userHobby},</if>
+        <if test="userBirthday!=null and userBirthday != ''">userBirthday=#{userBirthday},</if>
+        <if test="userAdress!=null and userAdress != ''">userAdress=#{userAdress},</if>
+        <if test="userStatus!=null and userStatus != ''">userStatus=#{userStatus},</if>
+        <if test="userDesc!=null and userDesc != ''">userDesc=#{userDesc}</if>
+    </trim>
+    where userId=#{userId}
+    </update>
 <!--单个删除-->
     <delete id="deleteUserByid" parameterType="java.lang.Integer">
-    delete from user where id=#{id}
+    delete from user where userId=#{userId}
     </delete>
 
 <!--批量删除-->
     <select id="deleteAll" parameterType="user" resultType="User">
        select * from 'user'
     <where>
-        id in
-    <foreach collection="user_ids" item="id" separator="，" open="(" close=")">
-        #{id}
+        userId in
+    <foreach collection="user_ids" item="userId" separator="，" open="(" close=")">
+        #{userId}
     </foreach>
     </where>
     </select>
     <!--<select id="tableuser"  resultType="User">-->
     <!--<include refid="sql"/>-->
     <!--</select>-->
-
+    <!--用戶刪除-->
     <select id="usercount" resultType="java.lang.Integer">
         select count(*) from user
     </select>
-
-    <select id="selectpage" parameterType="hashmap" resultMap="resultMap">
-      select u.id as id,u.userName,u.userEmail,u.userSex,u.userStatus,u.userEndTime,
-      p.id as pid,p.powername from user u left join power p on u.userGrade=p.id
+<!--用戶查詢-->
+    <select id="selectpage" parameterType="user" resultType="User">
+      select userId,userName,userEmail,userSex,userGrade,userStatus,userEndTime from user
         <where>
+        1=1
+        and userGrade in('1','2')
         <if test="userName != null and userName != ''">
         and userName like #{userName}
         </if>

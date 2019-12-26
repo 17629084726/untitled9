@@ -14,11 +14,14 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
        $("#UserName").html(UserName);
     	var userGrade = window.sessionStorage.getItem("userGrade");
     	var url;
-    	if(userGrade == 1)
-    		url="json/teacher.json";
-		else if(userGrade == 2)
-            url="json/student.json";
-		else
+    	if(userGrade == 1){
+			$("#userInfor").css("display","none");
+			url="json/teacher.json";
+		}
+		else if(userGrade == 2){
+			$("#userInfor").css("display","none");
+			url="json/student.json";
+		} else if (userGrade == 0)
             url="json/admin.json";
 
 		tab = layui.bodyTab({
@@ -152,20 +155,6 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 //打开新窗口
 function addTab(_this){
 	tab.tabAdd(_this);
-}
-
-//捐赠弹窗
-function donation(){
-	layer.tab({
-		area : ['260px', '367px'],
-		tab : [{
-			title : "微信",
-			content : "<div style='padding:30px;overflow:hidden;background:#d2d0d0;'><img src='images/wechat.jpg'></div>"
-		},{
-			title : "支付宝",
-			content : "<div style='padding:30px;overflow:hidden;background:#d2d0d0;'><img src='images/alipay.jpg'></div>"
-		}]
-	})
 }
 
 //图片管理弹窗

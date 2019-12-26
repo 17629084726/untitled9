@@ -1,0 +1,80 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.QuestionMapper">
+    <resultMap id="resultMap" type="Question">
+        <id property="Id" column="id"></id>
+        <result property="questionId" column="questionId"></result>
+        <result property="questionName" column="questionName"></result>
+        <result property="questionTypeA" column="questionTypeA"></result>
+        <result property="questionTypeB" column="questionTypeB"></result>
+        <result property="questionTypeC" column="questionTypeC"></result>
+        <result property="questionTypeD" column="questionTypeD"></result>
+        <result property="answer" column="answer"></result>
+        <result property="paperId" column="paperId"></result>
+        <result property="paperName" column="paperName"></result>
+        <result property="userName" column="userName"></result>
+        <result property="userId" column="userId"></result>
+        <result property="Abstract" column="abstract"></result>
+        <result property="questionTime" column="questionTime"></result>
+    </resultMap>
+    <sql id="sql">
+        select * from question
+    </sql>
+
+    <!--添加shiti-->
+    <insert id="addQuestion" parameterType="Question">
+        insert into question(questionId,questionName,questionTypeA,questionTypeB,questionTypeC,questionTypeD,answer,paperName,userName,Abstract,paperId,userId,questionTime) values
+        (#{questionId},#{questionName},#{questionTypeA},#{questionTypeB},#{questionTypeC},#{questionTypeD},#{answer},#{paperName},#{userName},#{Abstract},#{paperId},#{userId},#{questionTime})
+    </insert>
+    <!--修改用户-->
+    <update id="updateQuestion" parameterType="Question">
+    update question set questionName=#{questionName},questionType=#{questionType},answer=#{answer} where questionId=#{questionId}
+    </update>
+    <!--单个删除-->
+    <delete id="deleteQuestionByid" parameterType="java.lang.String">
+    delete from question where paperId=#{id}
+    </delete>
+
+    <!--批量删除-->
+    <select id="deleteAll" parameterType="user" resultType="Question">
+        select * from 'question'
+        <where>
+            paperId in
+            <foreach collection="user_ids" item="id" separator="，" open="(" close=")">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <!--用戶查詢-->
+    <select id="selectpage" parameterType="question" resultType="Question">
+        select distinct paperId,paperName,userName,questionTime from question
+        <where>
+            1=1
+            <if test="paperName != null and paperName != ''">
+                and paperName like #{paperName}
+            </if>
+            <!--<if test="loginName != null and loginName != ''">-->
+            <!--and loginName like '%${loginName}%'-->
+            <!--</if>-->
+            group by paperId
+        </where>
+        limit #{pagestart},#{limit}
+    </select>
+
+    <!--用戶查詢-->
+    <select id="selectpaperId" parameterType="question" resultType="Question">
+        select * from question
+        <where>
+            1=1
+            <if test="paperId != null and paperId != ''">
+                and paperId = #{paperId}
+            </if>
+            <!--<if test="loginName != null and loginName != ''">-->
+            <!--and loginName like '%${loginName}%'-->
+            <!--</if>-->
+            group by questionId
+        </where>
+    </select>
+</mapper>

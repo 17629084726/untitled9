@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.ExamScoerMapper">
+
+    <resultMap id="resultMap" type="ExamScoer">
+        <id property="userId" column="userId"></id>
+        <result property="userName" column="userName"></result>
+        <result property="questionId" column="questionId"></result>
+        <result property="examTime" column="examTime"></result>
+        <result property="answer" column="answer"></result>
+        <result property="examScoer" column="examScoer"></result>
+        <result property="paperId" column="paperId"></result>
+        <result property="paperName" column="paperName"></result>
+    </resultMap>
+
+    <!--添加shiti-->
+    <insert id="addExamScoer" parameterType="ExamScoer">
+        insert into examscoer(userId,userName,questionId,examTime,answer,examScoer,paperId) values
+        (#{userId},#{userName},#{questionId},#{examTime},#{answer},#{examScoer},#{paperId})
+    </insert>
+
+    <!--用戶查詢-->
+    <select id="selectpage" parameterType="ExamScoer" resultType="ExamScoer">
+        select * from examscoer
+        <where>
+            1=1
+            <if test="paperName != null and paperName != ''">
+                and userName like #{userName}
+            </if>
+            <!--<if test="loginName != null and loginName != ''">-->
+            <!--and loginName like '%${loginName}%'-->
+            <!--</if>-->
+        </where>
+        limit #{pagestart},#{limit}
+    </select>
+</mapper>

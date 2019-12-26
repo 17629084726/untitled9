@@ -11,7 +11,10 @@ layui.use(['form','layer','upload','laydate',"address"],function(){
         upload = layui.upload,
         laydate = layui.laydate,
         address = layui.address;
-
+    var id=window.sessionStorage.getItem("id");
+    //$("#id").html(id);
+    $("#userId").val(id);
+    alert(id);
     //上传头像
     upload.render({
         elem: '.userFaceBtn',
@@ -46,35 +49,58 @@ layui.use(['form','layer','upload','laydate',"address"],function(){
         }
     });
 
-    //获取省信息
-    address.provinces();
-
     //提交个人资料
     form.on("submit(changeUser)",function(data){
         var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
-        //将填写的用户信息存到session以便下次调取
+        var formdata = new FormData(document.getElementById("userInfo-form"));
+         var id=window.sessionStorage.getItem("id");
+         //$("#id").html(id);
+        $("#id").val(id);
         var key,userInfoHtml = '';
         userInfoHtml = {
             'realName' : $(".realName").val(),
-            'sex' : data.field.sex,
-            'userPhone' : $(".userPhone").val(),
+            'userName' : $(".userName").val(),
+            'userSex' : data.field.sex,
+            'phoneNumber' : $(".phoneNumber").val(),
             'userBirthday' : $(".userBirthday").val(),
-            'province' : data.field.province,
-            'city' : data.field.city,
-            'area' : data.field.area,
+            'userGrade' : $(".userGrade").val(),
+            'userAdress' : $(".userAdress").val(),
             'userEmail' : $(".userEmail").val(),
-            'myself' : $(".myself").val()
+            'userDesc' : $(".userDesc").val(),
+            'userHobby':data.field.userHobby,
         };
-        for(key in data.field){
-            if(key.indexOf("like") != -1){
-                userInfoHtml[key] = "on";
-            }
-        }
-        window.sessionStorage.setItem("userInfo",JSON.stringify(userInfoHtml));
-        setTimeout(function(){
+            console.log(id);
+            $.ajax(
+                {
+                    url: "/ren/updatetable.action",
+                    data: formdata,
+                    dataType: "json",
+                    type: "post",
+                    //contentType: "application/json",
+                    contentType: false,   //jax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件
+                    processData: false,   //当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
+                    success: function (d) {
+                        // d.msg == "success"
+                        if (d>0) {
+                            reid = d;
+                            // $("#uploadImg").trigger("click");
+                            // layer.msg("添加成功！")
+                            layer.close(index);
+                            layer.msg("提交成功！");
+                            top.layer.closeAll();
+                            // layer.close(layer.index)
+                            //刷新父页面
+                            parent.location.reload();
+                            // location.href="/ren/tableuser.action"
+                        } else {
+                            layer.msg("添加失败")
+                        }
+                    }
+                }
+            )
             layer.close(index);
-            layer.msg("提交成功！");
-        },2000);
+           layer.msg("提交成功！");
+        //},2000);
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     })
 

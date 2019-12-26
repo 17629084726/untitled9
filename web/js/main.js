@@ -17,9 +17,10 @@ function getLangDate(){
     var hour = dateObj.getHours(); //当前系统时间的小时值
     var minute = dateObj.getMinutes(); //当前系统时间的分钟值
     var second = dateObj.getSeconds(); //当前系统时间的秒钟值
+    var UserName=window.sessionStorage.getItem("user");
     var timeValue = "" +((hour >= 12) ? (hour >= 18) ? "晚上" : "下午" : "上午" ); //当前时间属于上午、晚上还是下午
     newDate = dateFilter(year)+"年"+dateFilter(month)+"月"+dateFilter(date)+"日 "+" "+dateFilter(hour)+":"+dateFilter(minute)+":"+dateFilter(second);
-    document.getElementById("nowTime").innerHTML = "亲爱的杜鑫，"+timeValue+"好！ 欢迎使用考试系统 2.0模版。当前时间为： "+newDate+"　"+week;
+    document.getElementById("nowTime").innerHTML = "亲爱的"+UserName+"，"+timeValue+"好！ 欢迎使用考试系统。当前时间为： "+newDate+"　"+week;
     setTimeout("getLangDate()",1000);
 }
 
@@ -29,6 +30,7 @@ layui.use(['form','element','layer','jquery'],function(){
         element = layui.element;
         $ = layui.jquery;
     var userGrade = window.sessionStorage.getItem("userGrade");
+    //alert(userGrade);
    var url;
     if(userGrade==1)
         $("#userInfor").css("display","none");
@@ -46,20 +48,7 @@ layui.use(['form','element','layer','jquery'],function(){
     $(".panel a").click(function(){
         parent.addTab($(this));
     })
-    //系统基本参数
-    if(window.sessionStorage.getItem("systemParameter")){
-        var systemParameter = JSON.parse(window.sessionStorage.getItem("systemParameter"));
-        fillParameter(systemParameter);
-    }else{
-        $.ajax({
-            url : "../json/systemParameter.json",
-            type : "get",
-            dataType : "json",
-            success : function(data){
-                fillParameter(data);
-            }
-        })
-    }
+
     //填充数据方法
     function fillParameter(data){
         //判断字段数据是否存在
@@ -93,7 +82,7 @@ layui.use(['form','element','layer','jquery'],function(){
     })
 
     //用户数量
-   $.get("../json/userList.json",function(data){
+   $.get("/ren/tableuser.action",function(data){
         $(".userAll span").text(data.count);
     })
 

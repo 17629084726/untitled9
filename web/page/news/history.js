@@ -9,7 +9,7 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     //新闻列表
     var tableIns = table.render({
         elem: '#newsList',
-        url : '../../json/newsList.json',
+        url : '/ren/tableExamScoer.action',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -18,33 +18,23 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
         id : "newsListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'newsId', title: 'ID', width:60, align:"center"},
-            {field: 'newsName', title: '用户ID', width:350},
-            {field: 'newsAuthor', title: '姓名', align:'center'},
-            {field: 'newsStatus', title: '试卷名称',  align:'center',templet:"#newsStatus"},
-            {field: 'newsLook', title: '分数', align:'center'},
-            /*{field: 'newsTop', title: '是否置顶', align:'center', templet:function(d){
-                return '<input type="checkbox" name="newsTop" lay-filter="newsTop" lay-skin="switch" lay-text="是|否" '+d.newsTop+'>'
-            }},*/
-            {field: 'newsTime', title: '考试时间', align:'center', minWidth:110, templet:function(d){
-                return d.newsTime.substring(0,10);
+            {field: 'paperId', title: 'ID', width:120, align:"center"},
+            {field: 'userId', title: '用户ID', width:80},
+            {field: 'userName', title: '姓名', align:'center'},
+            {field: 'paperName', title: '试卷名称',  align:'center',templet:"#newsStatus"},
+            {field: 'examTime', title: '考试时间', align:'center', minWidth:110, templet:function(d){
+                return d.examTime.substring(0,10);
             }},
-            {title: '操作', width:170, templet:'#newsListBar',fixed:"right",align:"center"}
+            {field: 'examScoer', title: '成绩', align:'center', minWidth:110, templet:function(d){
+                    if(d.examScoer != ""){
+                        return d.examScoer;
+                    }else {
+                        return "<a href='exam.html'>去考试</a>"
+                    }
+                }},
+            //{title: '操作', width:170, templet:'#newsListBar',fixed:"right",align:"center"}
         ]]
     });
-
-    //是否置顶
-    form.on('switch(newsTop)', function(data){
-        var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
-        setTimeout(function(){
-            layer.close(index);
-            if(data.elem.checked){
-                layer.msg("置顶成功！");
-            }else{
-                layer.msg("取消置顶成功！");
-            }
-        },500);
-    })
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){

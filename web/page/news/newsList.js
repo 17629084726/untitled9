@@ -6,10 +6,10 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
         laytpl = layui.laytpl,
         table = layui.table;
 
-    //新闻列表
+    //列表
     var tableIns = table.render({
         elem: '#newsList',
-        url : '../../json/newsList.json',
+        url : '/ren/tablequestion.action',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -18,16 +18,12 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
         id : "newsListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'newsId', title: 'ID', width:60, align:"center"},
-            {field: 'newsName', title: '试题名称', width:350},
-            {field: 'newsAuthor', title: '发布者', align:'center'},
-            {field: 'newsStatus', title: '发布状态',  align:'center',templet:"#newsStatus"},
-            {field: 'newsLook', title: '浏览权限', align:'center'},
-            {field: 'newsTop', title: '是否置顶', align:'center', templet:function(d){
-                return '<input type="checkbox" name="newsTop" lay-filter="newsTop" lay-skin="switch" lay-text="是|否" '+d.newsTop+'>'
-            }},
-            {field: 'newsTime', title: '发布时间', align:'center', minWidth:110, templet:function(d){
-                return d.newsTime.substring(0,10);
+            {field: 'paperId', title: '试题ID', width:120, align:"center"},
+            {field: 'paperName', title: '试题名称', width:350},
+            {field: 'userName', title: '发布者', align:'center'},
+            //{field: 'questionTime', title: '发布时间', align:'center'},
+            {field: 'questionTime', title: '发布时间', align:'center', minWidth:110, templet:function(d){
+                return d.questionTime.substring(0,10);
             }},
             {title: '操作', width:170, templet:'#newsListBar',fixed:"right",align:"center"}
         ]]
@@ -101,18 +97,45 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('newsListTable'),
             data = checkStatus.data,
-            newsId = [];
+            paperId = [];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                paperId.push(data[i].paperId);
             }
             layer.confirm('确定删除选中的文章？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                $.ajax(
+                    {
+                        url: "/ren/deleteQuestionAll.action",
+                        data: {id:paperId},
+                        dataType: "json",
+                        type: "get",
+                        contentType: false,   //jax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件
+                        processData: false,
+                        success: function (d) {
+                            // d.msg == "success"
+                            if (d>0) {
+                                reid = d;
+                                // $("#uploadImg").trigger("click");
+                                // layer.msg("添加成功！")
+                                layer.close(index);
+                                layer.msg("删除成功！");
+                                layer.closeAll();
+                                // layer.close(layer.index)
+                                //刷新父页面
+                                parent.location.reload();
+                                // location.href="/ren/tableuser.action"
+                            } else {
+                                layer.msg("删除失败")
+                            }
+                        }
+                    }
+                )
+                //  $.get("/ren/deleteQuestionAll.action",{
+                //      paperId : paperId  //将需要删除的newsId作为参数传入
+                //  },function(data){
+                // tableIns.reload();
+                // layer.close(index);
+                //  })
             })
         }else{
             layer.msg("请选择需要删除的文章");
@@ -123,20 +146,41 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     table.on('tool(newsList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
-
-        if(layEvent === 'edit'){ //编辑
-            addNews(data);
-        } else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此文章？',{icon:3, title:'提示信息'},function(index){
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                    tableIns.reload();
-                    layer.close(index);
-                // })
+       // alert(data.paperId);
+        var id=data.paperId;
+       if(layEvent === 'del'){ //删除
+            layer.confirm('确定删除此试题？',{icon:3, title:'提示信息'},function(index){
+                $.ajax(
+                    {
+                        url: "/ren/deleteQuestionByid.action",
+                        data: {"id":id},
+                        dataType: "json",
+                        type: "get",
+                        contentType: "application/json",
+                        success: function (d) {
+                            // d.msg == "success"
+                            if (d>0) {
+                                reid = d;
+                                layer.close(index);
+                                layer.msg("删除成功！");
+                                layer.closeAll();
+                                // layer.close(layer.index)
+                                //刷新父页面
+                                parent.location.reload();
+                                // location.href="/ren/tableuser.action"
+                            } else {
+                                layer.msg("删除失败")
+                            }
+                        }
+                    }
+                )
+                 // $.get("/ren/deleteQuestionByid.action",{
+                 //     paperId : data.paperId  //将需要删除的newsId作为参数传入
+                 // },function(data){
+                 //    tableIns.reload();
+                 //    layer.close(index);
+                 // })
             });
-        } else if(layEvent === 'look'){ //预览
-            layer.alert("此功能需要前台展示，实际开发中传入对应的必要参数进行文章内容页面访问")
         }
     });
 

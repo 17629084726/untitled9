@@ -38,10 +38,13 @@ layui.use(['form','layer','jquery'],function(){
                     // data:datalayui.field,//数据 }
                     success: function (d) {
                         console.log(d);
+                        console.log(d.userGrade);
+
                         if (d != null ) {
                             // layer.close(loginLoadIndex);
                             window.sessionStorage.setItem("user",d.userName);
                             window.sessionStorage.setItem("userGrade",d.userGrade);
+                            window.sessionStorage.setItem("id",d.userId);
                             window.location.href = "/ren/index.html";
                         } else {
                             layer.msg("用户名密码错误")
