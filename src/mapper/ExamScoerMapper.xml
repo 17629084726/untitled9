@@ -22,15 +22,16 @@
 
     <!--用戶查詢-->
     <select id="selectpage" parameterType="ExamScoer" resultType="ExamScoer">
-        select * from examscoer
+        select a.examTime as examTime,a.examScoer as examScoer,a.answer,u.userName as userName,q.paperName as paperName,
+        a.paperId as paperId
+        from examscoer a left JOIN `user` u on a.userId = u.userId LEFT JOIN question q on q.paperId = a.paperId
+
         <where>
             1=1
             <if test="paperName != null and paperName != ''">
-                and userName like #{userName}
+                and q.paperName like #{paperName}
             </if>
-            <!--<if test="loginName != null and loginName != ''">-->
-            <!--and loginName like '%${loginName}%'-->
-            <!--</if>-->
+            group by paperId
         </where>
         limit #{pagestart},#{limit}
     </select>

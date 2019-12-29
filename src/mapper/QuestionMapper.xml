@@ -47,13 +47,21 @@
         </where>
     </select>
 
-    <!--用戶查詢-->
+    <!--试题查詢-->
     <select id="selectpage" parameterType="question" resultType="Question">
-        select distinct paperId,paperName,userName,questionTime from question
+        /*select distinct paperId,paperName,userName,questionTime from question*/
+        select
+        distinct q.paperId as paperId,
+        q.paperName as paperName,
+        u.userName asuserName,
+        q.questionTime as questionTime
+        from question q
+        left JOIN user u
+        on q.userId = u.userId
         <where>
             1=1
             <if test="paperName != null and paperName != ''">
-                and paperName like #{paperName}
+                and q.paperName like #{paperName}
             </if>
             <!--<if test="loginName != null and loginName != ''">-->
             <!--and loginName like '%${loginName}%'-->
